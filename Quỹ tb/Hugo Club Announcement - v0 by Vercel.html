@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLB Hugo - Thông báo thu quỹ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #6b7280;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 3rem;
+        }
+
+        .image-upload {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder:hover {
+            background-color: #f3f4f6;
+        }
+
+        .image-placeholder input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .placeholder-content {
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .placeholder-content img {
+            opacity: 0.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .uploaded-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .content-text {
+            color: #374151;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card.money {
+            border-left-color: #10b981;
+        }
+
+        .info-card.deadline {
+            border-left-color: #ef4444;
+        }
+
+        .info-card.members {
+            border-left-color: #3b82f6;
+        }
+
+        .info-card-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .info-icon {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .money .info-icon {
+            background-color: #d1fae5;
+            color: #10b981;
+        }
+
+        .deadline .info-icon {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
+
+        .members .info-icon {
+            background-color: #dbeafe;
+            color: #3b82f6;
+        }
+
+        .info-text h3 {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-text .amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .info-text .deadline-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ef4444;
+        }
+
+        .info-text .members-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .info-text .subtitle {
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+
+        .warning-box {
+            background-color: #fefce8;
+            border-left: 4px solid #eab308;
+            border-radius: 0 8px 8px 0;
+            padding: 1rem;
+            margin: 2rem 0;
+        }
+
+        .warning-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .warning-icon {
+            font-size: 1.2rem;
+            margin-top: 0.1rem;
+        }
+
+        .warning-text h4 {
+            font-size: 0.9rem;
+            color: #92400e;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .warning-text p {
+            font-size: 0.9rem;
+            color: #a16207;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .cta-badge {
+            display: inline-block;
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .card-content {
+                padding: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>CLB Hugo</h1>
+            <p>Thông báo quan trọng</p>
+        </div>
+
+        <!-- Main Card -->
+        <div class="main-card">
+            <div class="card-header">
+                <h2>📢 Thông báo thu quỹ năm học mới</h2>
+            </div>
+            
+            <div class="card-content">
+                <!-- Static Image -->
+                <div class="image-upload">
+                    <img src="download.jpg" alt="Thông báo thu quỹ" class="uploaded-image">
+                </div>
+
+
+                <!-- Main Content -->
+                <div class="content-text">
+                    <p>Chào mọi người,
+Mình là Bùi Diễn của HC. <br> Mình nhận được thông báo từ chị Thảo Ly - bên HR của CLB Hugo - về việc thu quỹ đầu năm học mới. <br>
+
+Hiện tại, do kinh phí CLB khá eo hẹp nên CLB quyết định thu quỹ để phục vụ cho các hoạt động và sự kiện sắp tới. <br>
+
+Số tiền: 50.000đ / bạn <br>
+
+Số tài khoản: 9362199068 - Vietcombank - Trần Thị Thảo Ly <br>
+
+Hạn chót nộp: Đầu thứ Hai tuần sau
+</p>
+                </div>
+                
+                <div class="content-text">
+                    <p>
+Mọi người, đặc biệt là các bạn newbie, cố gắng nộp đúng hạn nhé. Cảm ơn mọi người!</p>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="info-grid">
+                    <div class="info-card money">
+                        <div class="info-card-content">
+                            <div class="info-icon">💰</div>
+                            <div class="info-text">
+                                <h3>Số tiền</h3>
+                                <div class="amount">50,000 VNĐ</div>
+                                <div class="subtitle">mỗi thành viên</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card deadline">
+                        <div class="info-card-content">
+                            <div class="info-icon">📅</div>
+                            <div class="info-text">
+                                <h3>Deadline</h3>
+                                <div class="deadline-text">Đầu thứ 2</div>
+                                <div class="subtitle">tuần sau</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card members">
+                        <div class="info-card-content">
+                            <div class="info-icon">👥</div>
+                            <div class="info-text">
+                                <h3>Đối tượng</h3>
+                                <div class="members-text">Tất cả</div>
+                                <div class="subtitle">thành viên CLB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning Box -->
+                <div class="warning-box">
+                    <div class="warning-content">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-text">
+                            <h4>Lưu ý đặc biệt</h4>
+                            <p>Các leader cần đốc thúc đặc biệt các bạn newbie trong team nộp quỹ đúng hạn.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call to Action -->
+                <div class="cta-section">
+                    <div class="cta-badge">
+                        💪 Cùng nhau xây dựng CLB Hugo phát triển mạnh mẽ!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 CLB Hugo - Thông báo chính thức</p>
+        </div>
+    </div>
+
+    <script>
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const placeholder = document.querySelector('.image-placeholder');
+                    placeholder.innerHTML = `<img src="${e.target.result}" alt="Uploaded image" class="uploaded-image">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to info cards
+            const infoCards = document.querySelectorAll('.info-card');
+            infoCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
